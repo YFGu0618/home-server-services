@@ -3,7 +3,7 @@ services:
     build: ./shadowsocks
     image: shadowsocks:1.12.5
     container_name: shadowsocks
-    user: 1000:1000
+    user: shadowsocks
     volumes:
       - ${HOME}/.config/shadowsocks.json:/home/shadowsocks/.config/shadowsocks.json:ro
     networks:
@@ -29,7 +29,7 @@ services:
     image: syncthing:1.18.5
     container_name: syncthing
     hostname: ${HOSTNAME}
-    user: 1000:1000
+    user: syncthing
     volumes:
       - ${HOME}/.config/syncthing:/home/syncthing/.config/syncthing
       - /mnt/external:/home/syncthing/data
@@ -56,7 +56,7 @@ services:
     build: ./rtorrent
     image: rtorrent:0.9.8
     container_name: rtorrent
-    user: 1000:1000
+    user: rtorrent
     volumes:
       - ${HOME}/.config/rtorrent:/home/rtorrent
       - /mnt/external/torrent:/home/rtorrent/torrent
@@ -71,6 +71,33 @@ services:
           memory: 1024M
     healthcheck:
       test: ["CMD", "nc", "-z", "127.0.0.1", "50000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+  flood:
+    build: ./flood
+    image: flood:4.7.0
+    container_name: flood
+    depends_on:
+      - rtorrent
+    user: node
+    volumes:
+      - ${HOME}/.config/rtorrent:/home/node/rtorrent
+      - /mnt/external/torrent:/home/node/torrent
+    networks:
+      - default
+    ports:
+      - 3000:3000
+    deploy:
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 128M
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "3000"]
       interval: 30s
       timeout: 10s
       retries: 3
