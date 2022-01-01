@@ -24,6 +24,34 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  syncthing:
+    build: ./syncthing
+    image: syncthing:1.18.5
+    container_name: syncthing
+    hostname: ${HOSTNAME}
+    user: 1000:1000
+    volumes:
+      - ${HOME}/.config/syncthing:/home/syncthing/.config/syncthing
+      - /mnt/external:/home/syncthing/data
+    networks:
+      - default
+    ports:
+      - 8384:8384
+      - 22000:22000/tcp
+      - 22000:22000/udp
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 1024M
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "8384"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
 networks:
   default:
     driver: bridge
