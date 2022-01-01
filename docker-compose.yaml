@@ -52,6 +52,31 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  rtorrent:
+    build: ./rtorrent
+    image: rtorrent:0.9.8
+    container_name: rtorrent
+    user: 1000:1000
+    volumes:
+      - ${HOME}/.config/rtorrent:/home/rtorrent
+      - /mnt/external/torrent:/home/rtorrent/torrent
+    networks:
+        - default
+    ports:
+      - 50000:50000
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 1024M
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "50000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
 networks:
   default:
     driver: bridge
