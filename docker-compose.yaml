@@ -1,0 +1,29 @@
+services:
+  shadowsocks:
+    build: ./shadowsocks
+    image: shadowsocks:1.12.5
+    container_name: shadowsocks
+    user: 1000:1000
+    volumes:
+      - ${HOME}/.config/shadowsocks.json:/home/shadowsocks/.config/shadowsocks.json:ro
+    networks:
+      - default
+    ports:
+      - 8388:8388/tcp
+      - 8388:8388/udp
+    deploy:
+      resources:
+        limits:
+          cpus: 0.5
+          memory: 128M
+    healthcheck:
+      test: ["CMD", "nc", "-z", "127.0.0.1", "8388"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge

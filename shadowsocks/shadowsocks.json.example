@@ -1,0 +1,6 @@
+{
+    "server": "::",
+    "server_port": 8388,
+    "password": "changeme",
+    "method": "aes-256-gcm"
+}
