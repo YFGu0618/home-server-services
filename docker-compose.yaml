@@ -104,6 +104,34 @@ services:
       start_period: 10s
     restart: unless-stopped
 
+  jellyfin:
+    build: ./jellyfin
+    image: ${USERNAME}/jellyfin:10.7.7
+    user: jellyfin
+    group_add:
+      - 998
+    container_name: jellyfin
+    volumes:
+      - ${HOME}/.config/jellyfin/config:/home/jellyfin/.config/jellyfin
+      - ${HOME}/.config/jellyfin/cache:/home/jellyfin/.config/cache
+      - /mnt/external/torrent:/media:ro
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
+    networks:
+      - default
+    ports:
+      - 8096:8096/tcp
+      - 8920:8920/tcp
+      - 1900:1900/udp
+      - 7359:7359/udp
+    deploy:
+      resources:
+        limits:
+          cpus: 4
+          memory: 4096M
+    restart: unless-stopped
+
 networks:
   default:
     driver: bridge

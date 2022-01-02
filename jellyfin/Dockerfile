@@ -1,0 +1,9 @@
+FROM jellyfin/jellyfin:10.7.7
+RUN apt-get -qq update \
+    && apt-get install -y -qq \
+        fonts-noto \
+    && rm -rf /var/lib/apt/lists/*
+RUN groupadd -g 1000 jellyfin && \
+    useradd -g 1000 -m -s /usr/sbin/nologin -u 1000 jellyfin
+USER jellyfin
+ENTRYPOINT ["/jellyfin/jellyfin", "--configdir", "/home/jellyfin/.config/jellyfin", "--cachedir", "/home/jellyfin/.config/cache"]
