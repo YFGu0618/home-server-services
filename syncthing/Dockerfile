@@ -18,4 +18,4 @@ RUN groupadd -g 1000 syncthing && \
     useradd -g 1000 -m -s /usr/sbin/nologin -u 1000 syncthing
 USER syncthing
 COPY --from=builder /root/syncthing/bin/ /home/syncthing/bin/
-ENTRYPOINT ["/home/syncthing/bin/syncthing"]
+ENTRYPOINT ["/home/syncthing/bin/syncthing", "--no-browser", "--no-upgrade", "--gui-address=0.0.0.0:8384"]

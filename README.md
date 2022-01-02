@@ -39,17 +39,14 @@ docker stats
 > [Shadowsocks](https://github.com/shadowsocks) is a fast tunnel proxy that helps you bypass firewalls. This service uses source code from [shadowsocks/shadowsocks-rust](https://github.com/shadowsocks/shadowsocks-rust).
 
 - Update `shadowsocks/shadowsocks.json.example` file and copy it to `${HOME}/.config/shadowsocks.json`, which would be used by `ssserver` in `shadowsocks` service container as it's config.
+- Shadowsocks service is accessible via `host_ip:8388` (default).
 
 ### 2. Syncthing
 
 > [Syncthing](https://github.com/syncthing) is a continuous file synchronization program. This service uses source code from [syncthing/syncthing](https://github.com/syncthing/syncthing).
 
 - Create the directory `${HOME}/.config/syncthing`, which would be used for storing configs and other data used by the program.
-- The Web GUI defaults to listening to `127.0.0.1:8384`, if plan to access from external devices, update `address` in `${HOME}/.config/syncthing/config.xml`:
-
-    ```xml
-    <address>0.0.0.0:8384</address>
-    ```
+- Syncthing Web GUI is accessible via `host_ip:8384` (default).
 
 - More details see [Syncthing Documentation](https://docs.syncthing.net/index.html).
 
@@ -61,5 +58,4 @@ docker stats
 
 - Create the directory `${HOME}/.config/rtorrent`, which would be used for storing configs and other data by the program.
 - Update `rtorrent/rtorrent.rc.example` file and copy it to `${HOME}/.config/rtorrent/rtorrent.rc`.
-- Flood Web GUI is accessible via `host_ip:3000`.
-  - Use `/home/node/rtorrent/.session/rpc.socket` for connecting to RTorrent.
+- Flood Web GUI is accessible via `host_ip:3000` (default).
