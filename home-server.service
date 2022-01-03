@@ -1,0 +1,17 @@
+[Unit]
+Description=Home Server Services
+Requires=docker.service network.target
+After=docker.service network.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+Environment=SERVICE_DIR=
+WorkingDirectory=
+User=
+ExecStart=docker-compose --project-directory ${SERVICE_DIR} up --remove-orphans --detach
+ExecReload=docker-compose --project-directory ${SERVICE_DIR} restart
+ExecStop=docker-compose --project-directory ${SERVICE_DIR} down --remove-orphans
+
+[Install]
+WantedBy=multi-user.target

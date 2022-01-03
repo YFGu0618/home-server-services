@@ -1,7 +1,7 @@
 services:
   shadowsocks:
     build: ./shadowsocks
-    image: shadowsocks:1.12.5
+    image: ${USERNAME}/shadowsocks:1.12.5
     container_name: shadowsocks
     user: shadowsocks
     volumes:
@@ -26,7 +26,7 @@ services:
 
   syncthing:
     build: ./syncthing
-    image: syncthing:1.18.5
+    image: ${USERNAME}/syncthing:1.18.5
     container_name: syncthing
     hostname: ${HOSTNAME}
     user: syncthing
@@ -54,7 +54,7 @@ services:
 
   rtorrent:
     build: ./rtorrent
-    image: rtorrent:0.9.8
+    image: ${USERNAME}/rtorrent:0.9.8
     container_name: rtorrent
     user: rtorrent
     volumes:
@@ -79,7 +79,7 @@ services:
 
   flood:
     build: ./flood
-    image: flood:4.7.0
+    image: ${USERNAME}/flood:4.7.0
     container_name: flood
     depends_on:
       - rtorrent

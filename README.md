@@ -3,31 +3,65 @@
 Home server services with Docker Compose, compiled from sources.
 
 - [Home Server Services](#home-server-services)
+  - [Tested Environment](#tested-environment)
   - [General Usage](#general-usage)
-    - [Start all services](#start-all-services)
-    - [Stop all services](#stop-all-services)
-    - [Check resources usage](#check-resources-usage)
+    - [1. Setup Environment Variables](#1-setup-environment-variables)
+    - [2. Automatically start on boot](#2-automatically-start-on-boot)
+    - [3. Start all services](#3-start-all-services)
+    - [4. Stop all services](#4-stop-all-services)
+    - [5. Debug with container logs](#5-debug-with-container-logs)
+    - [6. Check resources usage](#6-check-resources-usage)
   - [Services Setup](#services-setup)
     - [1. Shadowsocks](#1-shadowsocks)
     - [2. Syncthing](#2-syncthing)
     - [3. RTorrent + Flood](#3-rtorrent--flood)
     - [4. Jellyfin](#4-jellyfin)
 
+## Tested Environment
+
+- Host OS: `Fedora 34 (Workstation Edition)`
+- Host CPU: `Intel(R) Core(TM) i3-7100 CPU @ 3.90GHz`
+- Docker Version: `Docker version 20.10.12, build e91ed57`
+- Docker Compose Version: `docker-compose version 1.28.6, build unknown`
+
 ## General Usage
 
-### Start all services
+### 1. Setup Environment Variables
+
+```shell
+# Update .env file
+sed -i "s|HOSTNAME=.*|HOSTNAME=$HOSTNAME|g; s|USERNAME=.*|USERNAME=$USERNAME|g" .env
+```
+
+### 2. Automatically start on boot
+
+```shell
+# Update home-servers.service file
+SERVICE_DIR=$(realpath ./) sed -i "s|Environment=SERVICE_DIR=.*|Environment=SERVICE_DIR=$SERVICE_DIR|g; s|WorkingDirectory=.*|WorkingDirectory=$SERVICE_DIR|g; s|User=.*|User=$USERNAME|g" home-server.service
+
+sudo cp home-server.service /etc/systemd/system/home-server.service
+sudo systemctl enable home-server.service
+```
+
+### 3. Start all services
 
 ```shell
 docker-compose up --build --remove-orphans -d
 ```
 
-### Stop all services
+### 4. Stop all services
 
 ```shell
 docker-compose down -v --remove-orphans
 ```
 
-### Check resources usage
+### 5. Debug with container logs
+
+```shell
+docker-compose logs -f [service_name]
+```
+
+### 6. Check resources usage
 
 ```shell
 docker stats
