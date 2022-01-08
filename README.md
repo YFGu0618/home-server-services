@@ -16,6 +16,7 @@ Home server services with Docker Compose, compiled from sources.
     - [2. Syncthing](#2-syncthing)
     - [3. RTorrent + Flood](#3-rtorrent--flood)
     - [4. Jellyfin](#4-jellyfin)
+    - [5. nginx](#5-nginx)
 
 ## Tested Environment
 
@@ -103,3 +104,12 @@ docker stats
 - Create the directories `mkdir -p ~/.config/jellyfin/{config,cache}`, which would be used for storing configs and cache used by the program.
 - Update `docker-compose.yaml` to configure [hardware acceleration](https://jellyfin.org/docs/general/administration/hardware-acceleration.html) accordingly.
 - Jellyfin Web GUI is accessible via `host_ip:8096` (http) and/or `host_ip:8920` (https, if configured).
+
+### 5. nginx
+
+ > [nginx](https://nginx.org) is an HTTP and reverse proxy server, a mail proxy server, and a generic TCP/UDP proxy server. This service uses Docker Hub Image [nginx](https://hub.docker.com/_/nginx).
+
+- Create the directories `mkdir -p ~/.config/nginx`, which would be used for storing nginx configs.
+- Update configs in `nginx` and copy with `cp -r nginx ~/.config/nginx`.
+- Put SSL certificates under `~/.config/ssl` which is mounted to container's `/etc/ssl`.
+- Put site data under `~/www` which is mounted to container's `/usr/share/nginx/html` as the web server's root.
