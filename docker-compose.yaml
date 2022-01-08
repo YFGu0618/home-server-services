@@ -83,10 +83,10 @@ services:
     container_name: flood
     depends_on:
       - rtorrent
-    user: node
+    user: rtorrent
     volumes:
-      - ${HOME}/.config/rtorrent:/home/node/rtorrent
-      - /mnt/external/torrent:/home/node/torrent
+      - ${HOME}/.config/rtorrent:/home/rtorrent/rtorrent
+      - /mnt/external/torrent:/home/rtorrent/torrent
     networks:
       - default
     ports:
