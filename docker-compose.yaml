@@ -106,7 +106,7 @@ services:
 
   jellyfin:
     build: ./jellyfin
-    image: ${USERNAME}/jellyfin:10.7.7
+    image: ${USERNAME}/jellyfin:10.8.0
     user: jellyfin
     group_add:
       - 998
@@ -130,6 +130,25 @@ services:
         limits:
           cpus: 4
           memory: 4096M
+    restart: unless-stopped
+
+  nginx:
+    image: nginx:mainline
+    container_name: nginx
+    volumes:
+      - ${HOME}/.config/nginx:/etc/nginx:ro
+      - ${HOME}/.config/ssl:/etc/ssl:ro
+      - ${HOME}/www:/usr/share/nginx/html
+    networks:
+      - default
+    ports:
+      - 80:80
+      - 443:443
+    deploy:
+      resources:
+        limits:
+          cpus: 2
+          memory: 2048M
     restart: unless-stopped
 
 networks:

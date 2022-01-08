@@ -19,4 +19,4 @@ RUN apt-get -qq update && \
     rm -rf /var/lib/apt/lists/*
 COPY --from=builder /root/flood/dist/ /home/node/
 COPY --from=builder /root/flood/node_modules/ /home/node/node_modules/
-ENTRYPOINT ["/usr/local/bin/node", "/home/node/index.js", "--host", "0.0.0.0", "--port", "3000", "--auth", "none", "--rtsocket", "/home/node/rtorrent/.session/rpc.socket", "--rundir", "/home/node/rtorrent/flood", "--allowedpath", "/home/node/torrent"]
+ENTRYPOINT ["/usr/local/bin/node", "/home/node/index.js", "--host", "0.0.0.0", "--port", "3000", "--auth", "default", "--rtsocket", "/home/node/rtorrent/.session/rpc.socket", "--rundir", "/home/node/rtorrent/flood", "--allowedpath", "/home/node/torrent"]

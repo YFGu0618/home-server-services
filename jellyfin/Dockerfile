@@ -1,4 +1,4 @@
-FROM jellyfin/jellyfin:10.7.7
+FROM jellyfin/jellyfin:10.8.0-alpha5
 RUN apt-get -qq update \
     && apt-get install -y -qq \
         fonts-noto \
