@@ -11,6 +11,7 @@ Home server services with Docker Compose, compiled from sources.
     - [4. Stop all services](#4-stop-all-services)
     - [5. Debug with container logs](#5-debug-with-container-logs)
     - [6. Check resources usage](#6-check-resources-usage)
+    - [7. Enabling IPV6](#7-enabling-ipv6)
   - [Services Setup](#services-setup)
     - [1. Shadowsocks](#1-shadowsocks)
     - [2. Syncthing](#2-syncthing)
@@ -68,6 +69,28 @@ docker-compose logs -f [service_name]
 docker stats
 ```
 
+### 7. Enabling IPV6
+
+> Reference: <https://forums.docker.com/t/solution-docker-ipv6-and-docker-compose-woes/97852>
+
+- Update `/etc/docker/daemon.json` file to include following:
+
+    ```json
+    {
+        "ipv6": true,
+        "fixed-cidr-v6": "2001:db8:1::/64"
+    }
+    ```
+
+- Create iptables rules:
+
+  ```shell
+  sudo ip6tables -t nat -A POSTROUTING -s 2001:db8:1::/64 ! -o docker0 -j MASQUERADE
+  sudo ip6tables -t nat -A POSTROUTING -s 2001:db8:a::/64 ! -o docker0 -j MASQUERADE
+  ```
+
+- Create a IPV6-enabled network as defined in `docker-compose.yaml`.
+
 ## Services Setup
 
 ### 1. Shadowsocks
@@ -95,7 +118,6 @@ docker stats
 - Create the directory `mkdir -p  ~/.config/rtorrent`, which would be used for storing configs and other data by the program.
 - Update `rtorrent/rtorrent.rc.example` file and copy it to `~/.config/rtorrent/rtorrent.rc`.
 - Flood Web GUI is accessible via `host_ip:3000` (default).
-
 
 ### 4. Jellyfin
 
