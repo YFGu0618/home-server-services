@@ -112,8 +112,7 @@ services:
       - 998
     container_name: jellyfin
     volumes:
-      - ${HOME}/.config/jellyfin/config:/home/jellyfin/.config/jellyfin
-      - ${HOME}/.config/jellyfin/cache:/home/jellyfin/.config/cache
+      - ${HOME}/.config/jellyfin:/home/jellyfin/.config
       - /mnt/external/torrent:/media:ro
     devices:
       - /dev/dri/renderD128:/dev/dri/renderD128

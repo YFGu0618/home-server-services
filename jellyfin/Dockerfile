@@ -6,4 +6,4 @@ RUN apt-get -qq update \
 RUN groupadd -g 1000 jellyfin && \
     useradd -g 1000 -m -s /usr/sbin/nologin -u 1000 jellyfin
 USER jellyfin
-ENTRYPOINT ["/jellyfin/jellyfin", "--configdir", "/home/jellyfin/.config/jellyfin", "--cachedir", "/home/jellyfin/.config/cache"]
+ENTRYPOINT ["/jellyfin/jellyfin", "-c", "/home/jellyfin/.config", "-d", "/home/jellyfin/.config/data", "-C", "/home/jellyfin/.config/cache", "-l", "/home/jellyfin/.config/log"]
