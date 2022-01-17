@@ -7,9 +7,9 @@ RUN apt-get -qq update \
         git
 RUN rustup install nightly
 WORKDIR /root/
-RUN git clone https://github.com/shadowsocks/shadowsocks-rust.git && \
+RUN git clone --depth 1 --branch "${SHADOWSOCKS_VERSION}" \
+        https://github.com/shadowsocks/shadowsocks-rust.git && \
     cd shadowsocks-rust && \
-    git checkout tags/"${SHADOWSOCKS_VERSION}" -b build && \
     cargo +nightly build --release
 
 FROM debian:bullseye-slim

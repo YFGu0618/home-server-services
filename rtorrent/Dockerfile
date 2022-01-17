@@ -27,16 +27,16 @@ RUN svn checkout "http://svn.code.sf.net/p/xmlrpc-c/code/release_number/${XMLRPC
     ./configure --prefix="${BUILD_DIR}" --with-libwww-ssl && \
     make -j$(nproc) && \
     make install
-RUN git clone https://github.com/rakshasa/libtorrent.git && \
+RUN git clone --depth 1 --branch "${LIBTORRENT_VERSION}" \
+        https://github.com/rakshasa/libtorrent.git && \
     cd libtorrent && \
-    git checkout tags/"${LIBTORRENT_VERSION}" -b build && \
     ./autogen.sh && \
     ./configure --prefix="${BUILD_DIR}" --with-zlib && \
     make -j$(nproc) && \
     make install
-RUN git clone https://github.com/rakshasa/rtorrent.git && \
+RUN git clone  --depth 1 --branch "${RTORRENT_VERSION}" \
+        https://github.com/rakshasa/rtorrent.git && \
     cd rtorrent && \
-    git checkout tags/"${RTORRENT_VERSION}" -b build && \
     ./autogen.sh && \
     ./configure --prefix="${BUILD_DIR}" \
         --enable-ipv6 \

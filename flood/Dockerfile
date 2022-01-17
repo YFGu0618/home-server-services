@@ -4,9 +4,9 @@ RUN apt-get -qq update && \
     apt-get install -y -qq \
         git
 WORKDIR /root/
-RUN git clone https://github.com/jesec/flood.git && \
+RUN git clone  --depth 1 --branch "${FLOOD_VERSION}" \
+        https://github.com/jesec/flood.git && \
     cd flood && \
-    git checkout tags/"${FLOOD_VERSION}" -b build && \
     npm install && \
     npm run build && \
     rm -rf node_modules && \

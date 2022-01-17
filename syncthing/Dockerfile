@@ -1,12 +1,12 @@
 FROM golang:1.17-bullseye as builder
-ENV SYNCTHING_VERSION="v1.18.5"
+ENV SYNCTHING_VERSION="v1.18.6"
 RUN apt-get -qq update && \
     apt-get install -y -qq \
         git
 WORKDIR /root/
-RUN git clone https://github.com/syncthing/syncthing.git && \
+RUN git clone --depth 1 --branch "${SYNCTHING_VERSION}" \
+        https://github.com/syncthing/syncthing.git && \
     cd syncthing && \
-    git checkout tags/"${SYNCTHING_VERSION}" -b build && \
     go run build.go -no-upgrade
 
 FROM debian:bullseye-slim
