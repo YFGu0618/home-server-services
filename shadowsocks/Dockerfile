@@ -1,5 +1,5 @@
 FROM rust:1.57-slim-bullseye as builder
-ENV SHADOWSOCKS_VERSION="v1.12.5"
+ENV SHADOWSOCKS_VERSION="v1.13.1"
 ENV RUSTFLAGS="-C target-cpu=native"
 RUN apt-get -qq update \
     && apt-get install -y -qq \
