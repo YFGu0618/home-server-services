@@ -150,6 +150,35 @@ services:
           memory: 2048M
     restart: unless-stopped
 
+  vhserver:
+    build: ./linuxgsm-vhserver
+    image: ${USERNAME}/vhserver:latest
+    container_name: vhserver
+    user: vhserver
+    volumes:
+      - ${HOME}/.config/vhserver/common.cfg:/home/vhserver/lgsm/config-lgsm/vhserver/common.cfg:ro
+      - ${HOME}/.config/vhserver/save:/home/vhserver/.config/unity3d/IronGate/Valheim
+      - ${HOME}/.config/vhserver/backup:/home/vhserver/lgsm/backup
+      - ${HOME}/.config/vhserver/log:/home/vhserver/log
+      - ${HOME}/.config/vhserver/gamelog:/home/vhserver/serverfiles/Saved/Logs
+    networks:
+      - default
+    ports:
+      - 2456:2456/udp
+      - 2457:2457/udp
+    deploy:
+      resources:
+        limits:
+          cpus: 4
+          memory: 4096M
+    # healthcheck:
+    #   test: ["CMD", "nc", "-z", "127.0.0.1", "2456"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 60s
+    # restart: unless-stopped
+
 networks:
   default:
     enable_ipv6: true
