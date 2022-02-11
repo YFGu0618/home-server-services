@@ -45,7 +45,8 @@ ENV PATH="${HOME}/bin:${PATH}"
 RUN wget -O linuxgsm.sh https://linuxgsm.sh && \
     chmod +x linuxgsm.sh && \
     ./linuxgsm.sh vhserver && \
-    ./vhserver auto-install
+    ./vhserver auto-install && \
+    echo "valheimplus" | ./vhserver mods-install
 RUN (crontab -l 2>/dev/null; echo "0 4 * * * /home/vhserver/vhserver backup") | crontab -
 COPY entrypoint.sh entrypoint.sh
 ENTRYPOINT ["bash", "entrypoint.sh"]
