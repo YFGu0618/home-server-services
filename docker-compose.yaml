@@ -1,206 +1,61 @@
 services:
-  shadowsocks:
-    build: ./shadowsocks
-    image: ${USERNAME}/shadowsocks:1.13.1
-    container_name: shadowsocks
-    user: shadowsocks
-    volumes:
-      - ${HOME}/.config/shadowsocks.json:/home/shadowsocks/.config/shadowsocks.json:ro
-    networks:
-      - default
-    ports:
-      - 8388:8388/tcp
-      - 8388:8388/udp
-    deploy:
-      resources:
-        limits:
-          cpus: 0.5
-          memory: 128M
-    healthcheck:
-      test: ["CMD", "nc", "-z", "127.0.0.1", "8388"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    restart: unless-stopped
+  authelia:
+    extends:
+      file: compose/authelia.yaml
+      service: authelia
+  authelia_redis:
+    extends:
+      file: compose/authelia.yaml
+      service: authelia_redis
 
-  syncthing:
-    build: ./syncthing
-    image: ${USERNAME}/syncthing:1.19.0
-    container_name: syncthing
-    hostname: ${HOSTNAME}
-    user: syncthing
-    volumes:
-      - ${HOME}/.config/syncthing:/home/syncthing/.config/syncthing
-      - /mnt/external:/home/syncthing/data
-    networks:
-      - default
-    ports:
-      - 8384:8384
-      - 22000:22000/tcp
-      - 22000:22000/udp
-    deploy:
-      resources:
-        limits:
-          cpus: 2
-          memory: 1024M
-    healthcheck:
-      test: ["CMD", "nc", "-z", "127.0.0.1", "8384"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    restart: unless-stopped
-
-  rtorrent:
-    build: ./rtorrent
-    image: ${USERNAME}/rtorrent:0.9.8
-    container_name: rtorrent
-    user: rtorrent
-    volumes:
-      - ${HOME}/.config/rtorrent:/home/rtorrent
-      - /mnt/external/torrent:/home/rtorrent/torrent
-    networks:
-        - default
-    ports:
-      - 50000:50000
-    deploy:
-      resources:
-        limits:
-          cpus: 2
-          memory: 1024M
-    healthcheck:
-      test: ["CMD", "nc", "-z", "127.0.0.1", "50000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    restart: unless-stopped
-
-  flood:
-    build: ./flood
-    image: ${USERNAME}/flood:4.7.0
-    container_name: flood
-    depends_on:
-      - rtorrent
-    user: rtorrent
-    volumes:
-      - ${HOME}/.config/rtorrent:/home/rtorrent/rtorrent
-      - /mnt/external/torrent:/home/rtorrent/torrent
-    networks:
-      - default
-    ports:
-      - 3000:3000
-    deploy:
-      resources:
-        limits:
-          cpus: 0.5
-          memory: 128M
-    healthcheck:
-      test: ["CMD", "nc", "-z", "127.0.0.1", "3000"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 10s
-    restart: unless-stopped
+  dyndns:
+    extends:
+      file: compose/dyndns.yaml
+      service: dyndns
 
   jellyfin:
-    build: ./jellyfin
-    image: ${USERNAME}/jellyfin:10.8.0
-    user: jellyfin
-    group_add:
-      - 998
-    container_name: jellyfin
-    volumes:
-      - ${HOME}/.config/jellyfin:/home/jellyfin/.config
-      - /mnt/external/torrent:/media:ro
-    devices:
-      - /dev/dri/renderD128:/dev/dri/renderD128
-      - /dev/dri/card0:/dev/dri/card0
-    networks:
-      - default
-    ports:
-      - 8096:8096/tcp
-      - 8920:8920/tcp
-      - 1900:1900/udp
-      - 7359:7359/udp
-    deploy:
-      resources:
-        limits:
-          cpus: 4
-          memory: 4096M
-    restart: unless-stopped
+    extends:
+      file: compose/jellyfin.yaml
+      service: jellyfin
 
-  nginx:
-    image: nginx:mainline
-    container_name: nginx
-    volumes:
-      - ${HOME}/.config/nginx:/etc/nginx:ro
-      - ${HOME}/.config/ssl:/etc/ssl:ro
-      - ${HOME}/www:/usr/share/nginx/html
-    networks:
-      - default
-    ports:
-      - 80:80
-      - 443:443
-    deploy:
-      resources:
-        limits:
-          cpus: 2
-          memory: 2048M
-    restart: unless-stopped
+  portainer:
+    extends:
+      file: compose/portainer.yaml
+      service: portainer
 
-  vhserver:
-    build: ./linuxgsm-vhserver
-    image: ${USERNAME}/vhserver:latest
-    container_name: vhserver
-    user: vhserver
-    volumes:
-      - ${HOME}/.config/vhserver/common.cfg:/home/vhserver/lgsm/config-lgsm/vhserver/common.cfg:ro
-      - ${HOME}/.config/vhserver/save:/home/vhserver/.config/unity3d/IronGate/Valheim
-      - ${HOME}/.config/vhserver/backup:/home/vhserver/lgsm/backup
-      - ${HOME}/.config/vhserver/log:/home/vhserver/log
-      - ${HOME}/.config/vhserver/gamelog:/home/vhserver/serverfiles/Saved/Logs
-    networks:
-      - default
-    ports:
-      - 2456:2456/udp
-      - 2457:2457/udp
-    deploy:
-      resources:
-        limits:
-          cpus: 4
-          memory: 4096M
-    # healthcheck:
-    #   test: ["CMD", "nc", "-z", "127.0.0.1", "2456"]
-    #   interval: 30s
-    #   timeout: 10s
-    #   retries: 3
-    #   start_period: 60s
-    # restart: unless-stopped
+  qbittorrent:
+    extends:
+      file: compose/qbittorrent.yaml
+      service: qbittorrent
+
+  shadowsocks:
+    extends:
+      file: compose/shadowsocks.yaml
+      service: shadowsocks
+
+  swag:
+    extends:
+      file: compose/swag.yaml
+      service: swag
+
+  syncthing:
+    extends:
+      file: compose/syncthing.yaml
+      service: syncthing
 
   vaultwarden:
-    image: vaultwarden/server:latest
-    container_name: vaultwarden
-    user: ${UID}:${GID}
-    environment:
-      - ROCKET_PORT=8080
-      - SIGNUPS_ALLOWED=false
-      - INVITATIONS_ALLOWED=false
-      - YUBICO_CLIENT_ID=${YUBICO_CLIENT_ID}
-      - YUBICO_SECRET_KEY=${YUBICO_SECRET_KEY}
-    volumes:
-      - ${HOME}/.config/vaultwarden:/data
-    networks:
-      - default
-    deploy:
-      resources:
-        limits:
-          cpus: 0.25
-          memory: 256M
+    extends:
+      file: compose/vaultwarden.yaml
+      service: vaultwarden
+
+  vhserver:
+    extends:
+      file: compose/vhserver.yaml
+      service: vhserver
 
 networks:
-  default:
+  svcs_bridge:
+    name: svcs_bridge
     enable_ipv6: true
     driver: bridge
     driver_opts:

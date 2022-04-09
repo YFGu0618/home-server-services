@@ -1,0 +1,15 @@
+services:
+  qbittorrent:
+    extends:
+      file: _common.yaml
+      service: common
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    environment:
+      - WEBUI_PORT=8081
+    volumes:
+      - ${HOME}/.config/qbittorrent:/config
+      - /mnt/external/torrent:/downloads
+    ports:
+      - 6881:6881
+      - 6881:6881/udp

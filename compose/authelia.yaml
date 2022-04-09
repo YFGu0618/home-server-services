@@ -1,0 +1,21 @@
+services:
+  authelia:
+    extends:
+      file: _common.yaml
+      service: common
+    image: authelia/authelia:latest
+    container_name: authelia
+    volumes:
+      - ${HOME}/.config/authelia:/config
+    depends_on:
+      - authelia_redis
+
+  authelia_redis:
+    extends:
+      file: _common.yaml
+      service: common
+    build: ../redis
+    image: ${USER}/redis:6-bullseye
+    container_name: authelia_redis
+    volumes:
+      - ${HOME}/.config/authelia/redis:/data

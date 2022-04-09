@@ -1,0 +1,14 @@
+services:
+  shadowsocks:
+    extends:
+      file: _common.yaml
+      service: common
+    build: ../shadowsocks
+    image: ${USER}/shadowsocks:1.14.3
+    container_name: shadowsocks
+    user: shadowsocks
+    volumes:
+      - ${HOME}/.config/shadowsocks.json:/home/shadowsocks/.config/shadowsocks.json:ro
+    ports:
+      - 8388:8388
+      - 8388:8388/udp

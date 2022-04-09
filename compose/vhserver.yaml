@@ -1,0 +1,18 @@
+services:
+  vhserver:
+    extends:
+      file: _common.yaml
+      service: common
+    build: ../linuxgsm-vhserver
+    image: ${USER}/vhserver:latest
+    container_name: vhserver
+    user: vhserver
+    volumes:
+      - ${HOME}/.config/vhserver/common.cfg:/home/vhserver/lgsm/config-lgsm/vhserver/common.cfg:ro
+      - ${HOME}/.config/vhserver/save:/home/vhserver/.config/unity3d/IronGate/Valheim
+      - ${HOME}/.config/vhserver/backup:/home/vhserver/lgsm/backup
+      - ${HOME}/.config/vhserver/log:/home/vhserver/log
+      - ${HOME}/.config/vhserver/gamelog:/home/vhserver/serverfiles/Saved/Logs
+    ports:
+      - 2456:2456/udp
+      - 2457:2457/udp

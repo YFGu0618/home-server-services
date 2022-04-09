@@ -1,0 +1,18 @@
+services:
+  common:
+    hostname: ${HOSTNAME}
+    environment:
+      - PUID=${UID}
+      - PGID=${GID}
+      - TZ=America/Los_Angeles
+    networks:
+      - svcs_bridge
+    deploy:
+      resources:
+        limits:
+          cpus: "4"
+          memory: 4096M
+        reservations:
+          cpus: "0.5"
+          memory: 512M
+    restart: always

@@ -1,0 +1,15 @@
+services:
+  syncthing:
+    extends:
+      file: _common.yaml
+      service: common
+    build: ../syncthing
+    image: ${USER}/syncthing:1.19.2
+    container_name: syncthing
+    user: syncthing
+    volumes:
+      - ${HOME}/.config/syncthing:/home/syncthing/.config/syncthing
+      - /mnt/drv0:/home/syncthing/data
+    ports:
+      - 22000:22000
+      - 22000:22000/udp

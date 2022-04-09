@@ -1,0 +1,15 @@
+services:
+  dyndns:
+    extends:
+      file: _common.yaml
+      service: common
+    build: ../google-dyndns
+    image: ${USER}/dyndns:1.0
+    container_name: dyndns
+    user: dyndns
+    environment:
+      - INTERVAL=600
+      - IP_HISTORY=/home/dyndns/.config/ip.history
+      - DYNDNS_SECRETS=/home/dyndns/.config/secrets.json
+    volumes:
+      - ${HOME}/.config/dyndns:/home/dyndns/.config/
