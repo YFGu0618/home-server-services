@@ -1,4 +1,4 @@
-FROM debian:bullseye-slim as builder
+FROM debian:bullseye-slim
 RUN dpkg --add-architecture i386 && \
     apt-get -qq update && \
     apt-get -qq install -y \
