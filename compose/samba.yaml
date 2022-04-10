@@ -1,0 +1,14 @@
+services:
+  samba:
+    extends:
+      file: _common.yaml
+      service: common
+    image: dperson/samba:latest
+    container_name: samba
+    volumes:
+      - /mnt/drv1:/mnt1
+      - /mnt/drv2:/mnt2
+    command: '-s "${HOSTNAME}1;/mnt1;yes;no;no;${USER}" -s "${HOSTNAME}2;/mnt2;yes;no;no;${USER}" -u "${USER};${USER_PASSWORD}" -p'
+    ports:
+      - 445:445
+      - 445:445/udp

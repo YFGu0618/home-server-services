@@ -28,6 +28,11 @@ services:
       file: compose/qbittorrent.yaml
       service: qbittorrent
 
+  samba:
+    extends:
+      file: compose/samba.yaml
+      service: samba
+
   shadowsocks:
     extends:
       file: compose/shadowsocks.yaml

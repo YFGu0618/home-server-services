@@ -9,7 +9,7 @@ services:
       - WEBUI_PORT=8081
     volumes:
       - ${HOME}/.config/qbittorrent:/config
-      - /mnt/external/torrent:/downloads
+      - /mnt/drv1/torrent:/downloads
     ports:
       - 6881:6881
       - 6881:6881/udp
