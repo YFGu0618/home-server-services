@@ -8,13 +8,13 @@ services:
     container_name: jellyfin
     user: jellyfin
     group_add:
+      - "39"
       - "105"
     volumes:
       - ${HOME}/.config/jellyfin:/home/jellyfin/.config
       - /mnt/drv1/torrent:/media:ro
     devices:
-      - /dev/dri/renderD128:/dev/dri/renderD128
-      - /dev/dri/card0:/dev/dri/card0
+      - /dev/dri:/dev/dri
     ports:
       - 1900:1900/udp
       - 7359:7359/udp

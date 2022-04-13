@@ -1,0 +1,153 @@
+services:
+  photoprism:
+    extends:
+      file: _common.yaml
+      service: common
+    image: photoprism/photoprism:preview-bullseye
+    container_name: photoprism
+    user: ${UID}:${GID}
+    group_add:
+      - "39"
+      - "105"
+    working_dir: /photoprism
+    volumes:
+      - /mnt/drv1/Photos:/photoprism/originals
+      - /mnt/drv1/Import:/photoprism/import
+      - /mnt/drv2/PhotoPrismBackup:/photoprism/backup
+      - ${HOME}/.config/photoprism:/photoprism/storage
+    devices:
+      - /dev/dri:/dev/dri
+    ports:
+      - 2342:2342
+    environment:
+    # Basic
+      - PHOTOPRISM_ADMIN_PASSWORD=${PHOTOPRISM_ADMIN_PASSWORD}
+      - PHOTOPRISM_LOG_LEVEL=info
+      - PHOTOPRISM_DEBUG=false
+      - PHOTOPRISM_PUBLIC=false
+      - PHOTOPRISM_READONLY=false
+      - PHOTOPRISM_EXPERIMENTAL=false
+      # - PHOTOPRISM_CONFIG_FILE=
+      - PHOTOPRISM_CONFIG_PATH=/photoprism/storage/config
+    # Storage
+      - PHOTOPRISM_ORIGINALS_PATH=/photoprism/originals
+      - PHOTOPRISM_ORIGINALS_LIMIT=50000
+      - PHOTOPRISM_IMPORT_PATH=/photoprism/import
+      - PHOTOPRISM_BACKUP_PATH=/photoprism/backup
+      - PHOTOPRISM_STORAGE_PATH=/photoprism/storage
+      - PHOTOPRISM_SIDECAR_PATH=/photoprism/storage/sidecar
+      - PHOTOPRISM_CACHE_PATH=/photoprism/storage/cache
+      - PHOTOPRISM_TEMP_PATH=/photoprism/storage/temp
+      # - PHOTOPRISM_ASSETS_PATH=
+    # Index Workers
+      - PHOTOPRISM_WORKERS=12
+      - PHOTOPRISM_WAKEUP_INTERVAL=300
+      - PHOTOPRISM_AUTO_INDEX=100
+      - PHOTOPRISM_AUTO_IMPORT=60
+    # Feature Flags
+      - PHOTOPRISM_DISABLE_WEBDAV=true
+      - PHOTOPRISM_DISABLE_SETTINGS=false
+      - PHOTOPRISM_DISABLE_PLACES=false
+      - PHOTOPRISM_DISABLE_BACKUPS=false
+      - PHOTOPRISM_DISABLE_EXIFTOOL=false
+      - PHOTOPRISM_DISABLE_FFMPEG=false
+      - PHOTOPRISM_DISABLE_DARKTABLE=false
+      - PHOTOPRISM_DISABLE_RAWTHERAPEE=false
+      - PHOTOPRISM_DISABLE_SIPS=true
+      - PHOTOPRISM_DISABLE_HEIFCONVERT=false
+      - PHOTOPRISM_DISABLE_TENSORFLOW=false
+      - PHOTOPRISM_DISABLE_FACES=false
+      - PHOTOPRISM_DISABLE_CLASSIFICATION=false
+      - PHOTOPRISM_DETECT_NSFW=false
+      - PHOTOPRISM_UPLOAD_NSFW=true
+    # Web App
+      - PHOTOPRISM_APP_ICON=logo
+      - PHOTOPRISM_APP_NAME=PhotoPrism
+      - PHOTOPRISM_APP_MODE=standalone
+    # Site Information
+      # - PHOTOPRISM_CDN_URL=
+      - PHOTOPRISM_SITE_URL=http://localhost:2342/
+      - PHOTOPRISM_SITE_AUTHOR=${USER}
+      - PHOTOPRISM_SITE_TITLE=PhotoPrism
+      - PHOTOPRISM_SITE_CAPTION=Browse Your Life
+      - PHOTOPRISM_SITE_DESCRIPTION=Photo Archive
+      # - PHOTOPRISM_SITE_PREVIEW=
+      # - PHOTOPRISM_IMPRINT=
+    # Web Server
+      - PHOTOPRISM_HTTP_PORT=2342
+      - PHOTOPRISM_HTTP_HOST=0.0.0.0
+      - PHOTOPRISM_HTTP_MODE=release
+      - PHOTOPRISM_HTTP_COMPRESSION=gzip
+    # Database Connection
+      - PHOTOPRISM_DATABASE_DRIVER=mysql
+      # - PHOTOPRISM_DATABASE_DSN=
+      - PHOTOPRISM_DATABASE_SERVER=photoprism_mariadb:3306
+      - PHOTOPRISM_DATABASE_NAME=photoprism
+      - PHOTOPRISM_DATABASE_USER=photoprism
+      - PHOTOPRISM_DATABASE_PASSWORD=${PHOTOPRISM_DATABASE_PASSWORD}
+      - PHOTOPRISM_DATABASE_CONNS=6
+      - PHOTOPRISM_DATABASE_CONNS_IDLE=3
+    # External Tools
+      # - PHOTOPRISM_RAW_PRESETS=
+      # - PHOTOPRISM_DARKTABLE_BIN=
+      # - PHOTOPRISM_DARKTABLE_BLACKLIST=
+      # - PHOTOPRISM_RAWTHERAPEE_BIN=
+      # - PHOTOPRISM_RAWTHERAPEE_BLACKLIST=
+      # - PHOTOPRISM_SIPS_BIN=
+      # - PHOTOPRISM_HEIFCONVERT_BIN=
+      # - PHOTOPRISM_FFMPEG_BIN=
+      - PHOTOPRISM_FFMPEG_ENCODER=intel
+      - PHOTOPRISM_FFMPEG_BITRATE=50
+      - PHOTOPRISM_FFMPEG_BUFFERS=32
+      # - PHOTOPRISM_EXIFTOOL_BIN=
+    # URL Tokens
+      - PHOTOPRISM_DOWNLOAD_TOKEN=random
+      - PHOTOPRISM_PREVIEW_TOKEN=random
+    # Image Quality
+      - PHOTOPRISM_THUMB_FILTER=lanczos
+      - PHOTOPRISM_THUMB_SIZE=4096
+      - PHOTOPRISM_THUMB_UNCACHED=true
+      - PHOTOPRISM_THUMB_SIZE_UNCACHED=7680
+      - PHOTOPRISM_JPEG_SIZE=7680
+      - PHOTOPRISM_JPEG_QUALITY=85
+    # Facial Recognition
+      - PHOTOPRISM_FACE_SIZE=50
+      - PHOTOPRISM_FACE_SCORE=9
+      - PHOTOPRISM_FACE_OVERLAP=42
+      - PHOTOPRISM_FACE_CLUSTER_SIZE=80
+      - PHOTOPRISM_FACE_CLUSTER_SCORE=15
+      - PHOTOPRISM_FACE_CLUSTER_CORE=3
+      - PHOTOPRISM_FACE_CLUSTER_DIST=0.64
+      - PHOTOPRISM_FACE_MATCH_DIST=0.46
+    # Docker Specific
+      - PHOTOPRISM_DISABLE_CHOWN=false
+      # - PHOTOPRISM_INIT=update gpu tensorflow davfs clitools clean
+      - PHOTOPRISM_UID=${UID}
+      - PHOTOPRISM_GID=${GID}
+      - PHOTOPRISM_UMASK=0022
+      - HOME=/photoprism
+    depends_on:
+        - photoprism_mariadb
+    deploy:
+      resources:
+        limits:
+          cpus: "12"
+          memory: 12G
+        reservations:
+          cpus: "0.5"
+          memory: 512M
+
+  photoprism_mariadb:
+    extends:
+      file: _common.yaml
+      service: common
+    image: mariadb:10.7-focal
+    container_name: photoprism_mariadb
+    command: mysqld --innodb-buffer-pool-size=128M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
+    volumes:
+      - ${HOME}/.config/mariadb:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=photoprism
+      - MYSQL_USER=photoprism
+      - MYSQL_PASSWORD=${PHOTOPRISM_DATABASE_PASSWORD}

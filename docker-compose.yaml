@@ -18,6 +18,15 @@ services:
       file: compose/jellyfin.yaml
       service: jellyfin
 
+  photoprism:
+    extends:
+      file: compose/photoprism.yaml
+      service: photoprism
+  photoprism_mariadb:
+    extends:
+      file: compose/photoprism.yaml
+      service: photoprism_mariadb
+
   portainer:
     extends:
       file: compose/portainer.yaml
@@ -53,10 +62,10 @@ services:
       file: compose/vaultwarden.yaml
       service: vaultwarden
 
-  vhserver:
-    extends:
-      file: compose/vhserver.yaml
-      service: vhserver
+  # vhserver:
+  #   extends:
+  #     file: compose/vhserver.yaml
+  #     service: vhserver
 
 networks:
   svcs_bridge:

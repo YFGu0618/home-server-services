@@ -5,6 +5,9 @@ services:
       service: common
     image: dperson/samba:latest
     container_name: samba
+    environment:
+      - USERID=${UID}
+      - GROUPID=${GID}
     volumes:
       - /mnt/drv1:/mnt1
       - /mnt/drv2:/mnt2
