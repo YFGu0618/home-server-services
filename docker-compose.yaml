@@ -8,11 +8,6 @@ services:
       file: compose/authelia.yaml
       service: authelia_redis
 
-  dyndns:
-    extends:
-      file: compose/dyndns.yaml
-      service: dyndns
-
   jellyfin:
     extends:
       file: compose/jellyfin.yaml
@@ -47,15 +42,15 @@ services:
       file: compose/shadowsocks.yaml
       service: shadowsocks
 
-  swag:
-    extends:
-      file: compose/swag.yaml
-      service: swag
-
   syncthing:
     extends:
       file: compose/syncthing.yaml
       service: syncthing
+
+  traefik:
+    extends:
+      file: compose/traefik.yaml
+      service: traefik
 
   vaultwarden:
     extends:

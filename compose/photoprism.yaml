@@ -136,6 +136,13 @@ services:
         reservations:
           cpus: "0.5"
           memory: 512M
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.photoprism.rule=Host(`photoprism.${DOMAIN}`)"
+      - "traefik.http.routers.photoprism.entrypoints=websecure"
+      - "traefik.http.routers.photoprism.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.photoprism.middlewares=authelia@docker"
+      - "traefik.http.services.photoprism.loadbalancer.server.port=2342"
 
   photoprism_mariadb:
     extends:

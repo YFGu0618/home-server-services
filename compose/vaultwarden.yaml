@@ -13,3 +13,9 @@ services:
       - YUBICO_SECRET_KEY=${YUBICO_SECRET_KEY}
     volumes:
       - ${HOME}/.config/vaultwarden:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vaultwarden.rule=Host(`vault.${DOMAIN}`)"
+      - "traefik.http.routers.vaultwarden.entrypoints=websecure"
+      - "traefik.http.routers.vaultwarden.tls.certresolver=letsencrypt"
+      - "traefik.http.services.vaultwarden.loadbalancer.server.port=8080"
