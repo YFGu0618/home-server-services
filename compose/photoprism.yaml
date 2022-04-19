@@ -3,7 +3,7 @@ services:
     extends:
       file: _common.yaml
       service: common
-    image: photoprism/photoprism:preview-bullseye
+    image: photoprism/photoprism:preview
     container_name: photoprism
     user: ${UID}:${GID}
     group_add:
@@ -11,7 +11,7 @@ services:
       - "105"
     working_dir: /photoprism
     volumes:
-      - /mnt/drv1/Photos:/photoprism/originals
+      - /mnt/drv0/Photos:/photoprism/originals
       - /mnt/drv1/Import:/photoprism/import
       - /mnt/drv2/PhotoPrismBackup:/photoprism/backup
       - ${HOME}/.config/photoprism:/photoprism/storage
@@ -26,7 +26,7 @@ services:
       - PHOTOPRISM_DEBUG=false
       - PHOTOPRISM_PUBLIC=false
       - PHOTOPRISM_READONLY=false
-      - PHOTOPRISM_EXPERIMENTAL=false
+      - PHOTOPRISM_EXPERIMENTAL=true
       # - PHOTOPRISM_CONFIG_FILE=
       - PHOTOPRISM_CONFIG_PATH=/photoprism/storage/config
     # Storage
@@ -41,9 +41,9 @@ services:
       # - PHOTOPRISM_ASSETS_PATH=
     # Index Workers
       - PHOTOPRISM_WORKERS=12
-      - PHOTOPRISM_WAKEUP_INTERVAL=300
-      - PHOTOPRISM_AUTO_INDEX=100
-      - PHOTOPRISM_AUTO_IMPORT=60
+      - PHOTOPRISM_WAKEUP_INTERVAL=900
+      - PHOTOPRISM_AUTO_INDEX=300
+      - PHOTOPRISM_AUTO_IMPORT=180
     # Feature Flags
       - PHOTOPRISM_DISABLE_WEBDAV=true
       - PHOTOPRISM_DISABLE_SETTINGS=false
@@ -52,7 +52,7 @@ services:
       - PHOTOPRISM_DISABLE_EXIFTOOL=false
       - PHOTOPRISM_DISABLE_FFMPEG=false
       - PHOTOPRISM_DISABLE_DARKTABLE=false
-      - PHOTOPRISM_DISABLE_RAWTHERAPEE=false
+      - PHOTOPRISM_DISABLE_RAWTHERAPEE=true
       - PHOTOPRISM_DISABLE_SIPS=true
       - PHOTOPRISM_DISABLE_HEIFCONVERT=false
       - PHOTOPRISM_DISABLE_TENSORFLOW=false
@@ -88,7 +88,7 @@ services:
       - PHOTOPRISM_DATABASE_CONNS=6
       - PHOTOPRISM_DATABASE_CONNS_IDLE=3
     # External Tools
-      # - PHOTOPRISM_RAW_PRESETS=
+      - PHOTOPRISM_RAW_PRESETS=false
       # - PHOTOPRISM_DARKTABLE_BIN=
       # - PHOTOPRISM_DARKTABLE_BLACKLIST=
       # - PHOTOPRISM_RAWTHERAPEE_BIN=
@@ -106,22 +106,22 @@ services:
     # Image Quality
       - PHOTOPRISM_THUMB_FILTER=lanczos
       - PHOTOPRISM_THUMB_SIZE=4096
-      - PHOTOPRISM_THUMB_UNCACHED=true
+      - PHOTOPRISM_THUMB_UNCACHED=false
       - PHOTOPRISM_THUMB_SIZE_UNCACHED=7680
       - PHOTOPRISM_JPEG_SIZE=7680
       - PHOTOPRISM_JPEG_QUALITY=85
     # Facial Recognition
-      - PHOTOPRISM_FACE_SIZE=50
+      - PHOTOPRISM_FACE_SIZE=42
       - PHOTOPRISM_FACE_SCORE=9
-      - PHOTOPRISM_FACE_OVERLAP=42
-      - PHOTOPRISM_FACE_CLUSTER_SIZE=80
+      - PHOTOPRISM_FACE_OVERLAP=64
+      - PHOTOPRISM_FACE_CLUSTER_SIZE=20
       - PHOTOPRISM_FACE_CLUSTER_SCORE=15
       - PHOTOPRISM_FACE_CLUSTER_CORE=3
       - PHOTOPRISM_FACE_CLUSTER_DIST=0.64
       - PHOTOPRISM_FACE_MATCH_DIST=0.46
     # Docker Specific
       - PHOTOPRISM_DISABLE_CHOWN=false
-      # - PHOTOPRISM_INIT=update gpu tensorflow davfs clitools clean
+      - PHOTOPRISM_INIT=update gpu tensorflow davfs clitools clean
       - PHOTOPRISM_UID=${UID}
       - PHOTOPRISM_GID=${GID}
       - PHOTOPRISM_UMASK=0022
@@ -150,7 +150,8 @@ services:
       service: common
     image: mariadb:10.7-focal
     container_name: photoprism_mariadb
-    command: mysqld --innodb-buffer-pool-size=128M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
+    user: ${UID}:${GID}
+    command: mysqld --innodb-buffer-pool-size=512M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
     volumes:
       - ${HOME}/.config/mariadb:/var/lib/mysql
     environment:
