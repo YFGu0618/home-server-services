@@ -1,9 +1,9 @@
 services:
   vhserver:
     extends:
-      file: _common.yaml
-      service: common
-    build: ../linuxgsm-vhserver
+      file: ../../base/docker-compose.yaml
+      service: base
+    build: ./
     image: ${USER}/vhserver:latest
     container_name: vhserver
     user: vhserver

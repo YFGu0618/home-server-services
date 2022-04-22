@@ -1,15 +1,15 @@
 services:
   jellyfin:
     extends:
-      file: _common.yaml
-      service: common
-    build: ../jellyfin
+      file: ../../base/docker-compose.yaml
+      service: base
+    build: ./
     image: ${USER}/jellyfin:10.8.0b1
     container_name: jellyfin
     user: jellyfin
     group_add:
-      - "39"
-      - "105"
+      - video
+      - render
     volumes:
       - ${HOME}/.config/jellyfin:/home/jellyfin/.config
       - /mnt/drv1/torrent:/media:ro

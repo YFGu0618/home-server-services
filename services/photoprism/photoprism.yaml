@@ -1,14 +1,14 @@
 services:
   photoprism:
     extends:
-      file: _common.yaml
-      service: common
+      file: ../../base/docker-compose.yaml
+      service: base
     image: photoprism/photoprism:preview
     container_name: photoprism
     user: ${UID}:${GID}
     group_add:
-      - "39"
-      - "105"
+      - video
+      - render
     working_dir: /photoprism
     volumes:
       - /mnt/drv0/Photos:/photoprism/originals
@@ -127,7 +127,7 @@ services:
       - PHOTOPRISM_UMASK=0022
       - HOME=/photoprism
     depends_on:
-        - photoprism_mariadb
+        - mariadb
     deploy:
       resources:
         limits:
@@ -143,19 +143,3 @@ services:
       - "traefik.http.routers.photoprism.tls.certresolver=letsencrypt"
       - "traefik.http.routers.photoprism.middlewares=authelia@docker"
       - "traefik.http.services.photoprism.loadbalancer.server.port=2342"
-
-  photoprism_mariadb:
-    extends:
-      file: _common.yaml
-      service: common
-    image: mariadb:10.7-focal
-    container_name: photoprism_mariadb
-    user: ${UID}:${GID}
-    command: mysqld --innodb-buffer-pool-size=512M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
-    volumes:
-      - ${HOME}/.config/mariadb:/var/lib/mysql
-    environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=photoprism
-      - MYSQL_USER=photoprism
-      - MYSQL_PASSWORD=${PHOTOPRISM_DATABASE_PASSWORD}

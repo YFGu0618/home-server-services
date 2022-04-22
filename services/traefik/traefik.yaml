@@ -1,15 +1,15 @@
 services:
   traefik:
     extends:
-      file: _common.yaml
-      service: common
-    image: traefik:v2.7
+      file: ../../base/docker-compose.yaml
+      service: base
+    image: traefik:latest
     container_name: traefik
     volumes:
       - ${HOME}/.config/traefik/letsencrypt:/letsencrypt
       - /var/run/docker.sock:/var/run/docker.sock:ro
     command:
-      - "--log.level=INFO"
+      - --log.level=INFO
       - --api.dashboard=true
       - --api.insecure=false
       - --providers.docker=true
@@ -27,7 +27,7 @@ services:
       - --certificatesresolvers.letsencrypt.acme.email=${EMAIL}
       - --certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json
       # LetsEncrypt ACME Staging Server
-      - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
+      # - --certificatesresolvers.letsencrypt.acme.caserver=https://acme-staging-v02.api.letsencrypt.org/directory
     environment:
       - CF_API_EMAIL=${CF_API_EMAIL}
       - CF_API_KEY=${CF_API_KEY}

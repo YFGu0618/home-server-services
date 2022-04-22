@@ -1,65 +1,67 @@
 services:
   authelia:
     extends:
-      file: compose/authelia.yaml
+      file: services/authelia/authelia.yaml
       service: authelia
-  authelia_redis:
-    extends:
-      file: compose/authelia.yaml
-      service: authelia_redis
 
   jellyfin:
     extends:
-      file: compose/jellyfin.yaml
+      file: services/jellyfin/jellyfin.yaml
       service: jellyfin
+
+  mariadb:
+    extends:
+      file: services/mariadb/mariadb.yaml
+      service: mariadb
 
   photoprism:
     extends:
-      file: compose/photoprism.yaml
+      file: services/photoprism/photoprism.yaml
       service: photoprism
-  photoprism_mariadb:
-    extends:
-      file: compose/photoprism.yaml
-      service: photoprism_mariadb
 
   portainer:
     extends:
-      file: compose/portainer.yaml
+      file: services/portainer/portainer.yaml
       service: portainer
 
   qbittorrent:
     extends:
-      file: compose/qbittorrent.yaml
+      file: services/qbittorrent/qbittorrent.yaml
       service: qbittorrent
+
+  redis:
+    extends:
+      file: services/redis/redis.yaml
+      service: redis
 
   samba:
     extends:
-      file: compose/samba.yaml
+      file: services/samba/samba.yaml
       service: samba
 
   shadowsocks:
     extends:
-      file: compose/shadowsocks.yaml
+      file: services/shadowsocks/shadowsocks.yaml
       service: shadowsocks
 
   syncthing:
     extends:
-      file: compose/syncthing.yaml
+      file: services/syncthing/syncthing.yaml
       service: syncthing
 
   traefik:
     extends:
-      file: compose/traefik.yaml
+      file: services/traefik/traefik.yaml
       service: traefik
 
   vaultwarden:
     extends:
-      file: compose/vaultwarden.yaml
+      file: services/vaultwarden/vaultwarden.yaml
       service: vaultwarden
 
   # vhserver:
   #   extends:
-  #     file: compose/vhserver.yaml
+  #     file: services/lgsm-vhserver/lgsm-vhserver.yaml
   #     service: vhserver
 
 networks:
@@ -73,3 +75,15 @@ networks:
       config:
         - subnet: 2001:db8:a::/64
           gateway: 2001:db8:a::1
+  svcs_vlan:
+    name: svcs_vlan
+    driver: macvlan
+    driver_opts:
+      parent: enp0s31f6
+    ipam:
+      config:
+        - subnet: 192.168.200.0/24
+          gateway: 192.168.200.1
+          ip_range: 192.168.200.128/25
+          aux_addresses:
+            boxedmilk: 192.168.200.200

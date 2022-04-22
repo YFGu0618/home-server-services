@@ -1,9 +1,9 @@
 services:
   syncthing:
     extends:
-      file: _common.yaml
-      service: common
-    build: ../syncthing
+      file: ../../base/docker-compose.yaml
+      service: base
+    build: ./
     image: ${USER}/syncthing:1.19.2
     container_name: syncthing
     user: syncthing

@@ -1,8 +1,8 @@
 services:
   qbittorrent:
     extends:
-      file: _common.yaml
-      service: common
+      file: ../../base/docker-compose.yaml
+      service: base
     image: lscr.io/linuxserver/qbittorrent:latest
     container_name: qbittorrent
     environment:

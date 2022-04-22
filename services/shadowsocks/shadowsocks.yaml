@@ -1,9 +1,9 @@
 services:
   shadowsocks:
     extends:
-      file: _common.yaml
-      service: common
-    build: ../shadowsocks
+      file: ../../base/docker-compose.yaml
+      service: base
+    build: ./
     image: ${USER}/shadowsocks:1.14.3
     container_name: shadowsocks
     user: shadowsocks

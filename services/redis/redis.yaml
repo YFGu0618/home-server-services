@@ -1,0 +1,10 @@
+services:
+  redis:
+    extends:
+      file: ../../base/docker-compose.yaml
+      service: base
+    build: ./
+    image: ${USER}/redis:6-bullseye
+    container_name: redis
+    volumes:
+      - ${HOME}/.config/authelia/redis:/data

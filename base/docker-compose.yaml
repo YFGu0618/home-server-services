@@ -1,5 +1,5 @@
 services:
-  common:
+  base:
     hostname: ${HOSTNAME}
     environment:
       - PUID=${UID}

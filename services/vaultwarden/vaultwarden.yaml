@@ -1,8 +1,8 @@
 services:
   vaultwarden:
     extends:
-      file: _common.yaml
-      service: common
+      file: ../../base/docker-compose.yaml
+      service: base
     image: vaultwarden/server:latest
     container_name: vaultwarden
     environment:

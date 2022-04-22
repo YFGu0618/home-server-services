@@ -1,14 +1,14 @@
 services:
   authelia:
     extends:
-      file: _common.yaml
-      service: common
+      file: ../../base/docker-compose.yaml
+      service: base
     image: authelia/authelia:latest
     container_name: authelia
     volumes:
       - ${HOME}/.config/authelia:/config
     depends_on:
-      - authelia_redis
+      - redis
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.authelia.rule=Host(`login.${DOMAIN}`)"
@@ -21,13 +21,3 @@ services:
       - "traefik.http.middlewares.authelia-basic.forwardauth.address=http://authelia:9091/api/verify?auth=basic"
       - "traefik.http.middlewares.authelia-basic.forwardauth.trustForwardHeader=true"
       - "traefik.http.middlewares.authelia-basic.forwardauth.authResponseHeaders=Remote-User, Remote-Groups, Remote-Name, Remote-Email"
-
-  authelia_redis:
-    extends:
-      file: _common.yaml
-      service: common
-    build: ../redis
-    image: ${USER}/redis:6-bullseye
-    container_name: authelia_redis
-    volumes:
-      - ${HOME}/.config/authelia/redis:/data

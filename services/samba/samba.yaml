@@ -1,8 +1,8 @@
 services:
   samba:
     extends:
-      file: _common.yaml
-      service: common
+      file: ../../base/docker-compose.yaml
+      service: base
     image: dperson/samba:latest
     container_name: samba
     environment:
