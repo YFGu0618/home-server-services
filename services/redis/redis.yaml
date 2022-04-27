@@ -1,12 +1,17 @@
 services:
   redis:
     extends:
-      file: ../../base/docker-compose.yaml
+      file: ../base.yaml
       service: base
-    build:
-      context: ./
-      network: host
-    image: ${USER}/redis:6-bullseye
+    image: bitnami/redis:latest
     container_name: redis
     volumes:
-      - ${HOME}/.config/authelia/redis:/data
+      - ${HOME}/.config/svcs/redis/redis.conf:/opt/bitnami/redis/mounted-etc/redis.conf
+      - ${HOME}/.config/svcs/redis/users.acl:/opt/bitnami/redis/mounted-etc/users.acl
+      - ${HOME}/.config/svcs/redis/data:/bitnami/redis/data
+    environment:
+      - REDIS_PORT_NUMBER=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_ACLFILE=/opt/bitnami/redis/mounted-etc/users.acl
+    # ports:
+    #   - 6379:6379

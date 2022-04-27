@@ -1,24 +1,28 @@
 services:
   jellyfin:
     extends:
-      file: ../../base/docker-compose.yaml
+      file: ../base.yaml
       service: base
     build:
       context: ./
       network: host
-    image: ${USER}/jellyfin:10.8.0b1
+    image: ${USER}/jellyfin:10.8.0b2
     container_name: jellyfin
     user: jellyfin
+    depends_on:
+      - authelia
+      - openldap
+      - traefik
     group_add:
       - "39"
       - "105"
     volumes:
-      - ${HOME}/.config/jellyfin:/home/jellyfin/.config
+      - ${HOME}/.config/svcs/jellyfin:/home/jellyfin/.config
       - /mnt/drv1/torrent:/media:ro
     devices:
       - /dev/dri:/dev/dri
     ports:
-      - 8086:8086
+      # - 8086:8086
       - 1900:1900/udp
       - 7359:7359/udp
     labels:

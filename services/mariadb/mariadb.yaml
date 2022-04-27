@@ -1,16 +1,20 @@
 services:
   mariadb:
     extends:
-      file: ../../base/docker-compose.yaml
+      file: ../base.yaml
       service: base
-    image: mariadb:10.7-focal
+    image: bitnami/mariadb:latest
     container_name: mariadb
-    user: ${UID}:${GID}
-    command: mysqld --innodb-buffer-pool-size=512M --transaction-isolation=READ-COMMITTED --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci --max-connections=512 --innodb-rollback-on-timeout=OFF --innodb-lock-wait-timeout=120
     volumes:
-      - ${HOME}/.config/mariadb:/var/lib/mysql
+      - ${HOME}/.config/svcs/mariadb:/bitnami/mariadb
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=photoprism
-      - MYSQL_USER=photoprism
-      - MYSQL_PASSWORD=${PHOTOPRISM_DATABASE_PASSWORD}
+      - ALLOW_EMPTY_PASSWORD=no
+      - MARIADB_CHARACTER_SET=utf8mb4
+      - MARIADB_COLLATE=utf8mb4_unicode_ci
+      - MARIADB_ROOT_USER=${MARIADB_ROOT_USER}
+      - MARIADB_ROOT_PASSWORD=${MARIADB_ROOT_PASSWORD}
+      # First time envs
+      # - MARIADB_SKIP_TEST_DB=yes
+      # - MARIADB_DATABASE=
+      # - MARIADB_USER=
+      # - MARIADB_PASSWORD=${MARIADB_PASSWORD}

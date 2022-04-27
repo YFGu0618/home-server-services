@@ -1,14 +1,17 @@
 services:
   authelia:
     extends:
-      file: ../../base/docker-compose.yaml
+      file: ../base.yaml
       service: base
     image: authelia/authelia:latest
     container_name: authelia
-    volumes:
-      - ${HOME}/.config/authelia:/config
     depends_on:
       - redis
+      - openldap
+    volumes:
+      - ${HOME}/.config/svcs/authelia:/config
+    # ports:
+    #   - 9091:9091
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.authelia.rule=Host(`login.${DOMAIN}`)"

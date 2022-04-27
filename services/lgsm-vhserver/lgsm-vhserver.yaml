@@ -1,7 +1,7 @@
 services:
   vhserver:
     extends:
-      file: ../../base/docker-compose.yaml
+      file: ../base.yaml
       service: base
     build:
       context: ./

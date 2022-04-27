@@ -1,7 +1,7 @@
 services:
   syncthing:
     extends:
-      file: ../../base/docker-compose.yaml
+      file: ../base.yaml
       service: base
     build:
       context: ./
@@ -9,10 +9,15 @@ services:
     image: ${USER}/syncthing:1.19.2
     container_name: syncthing
     user: syncthing
+    depends_on:
+      - authelia
+      - openldap
+      - traefik
     volumes:
-      - ${HOME}/.config/syncthing:/home/syncthing/.config/syncthing
+      - ${HOME}/.config/svcs/syncthing:/home/syncthing/.config/syncthing
       - /mnt/drv0:/home/syncthing/data
     ports:
+      # - 8384:8384
       - 22000:22000
       - 22000:22000/udp
     labels:

@@ -1,0 +1,20 @@
+services:
+  openldap:
+    extends:
+      file: ../base.yaml
+      service: base
+    image: bitnami/openldap:latest
+    container_name: openldap
+    volumes:
+      - ${HOME}/.config/svcs/openldap:/bitnami/openldap
+    environment:
+      - LDAP_PORT_NUMBER=1389
+      # First time envs
+      # - LDAP_ROOT=${LDAP_ROOT}
+      # - LDAP_ADMIN_USERNAME=${LDAP_ADMIN_USERNAME}
+      # - LDAP_ADMIN_PASSWORD=${LDAP_ADMIN_PASSWORD}
+      # - LDAP_GROUP=
+      # - LDAP_USERS=
+      # - LDAP_PASSWORDS=
+    ports:
+      - 1389:1389

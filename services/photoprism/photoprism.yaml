@@ -1,27 +1,32 @@
 services:
   photoprism:
     extends:
-      file: ../../base/docker-compose.yaml
+      file: ../base.yaml
       service: base
-    image: photoprism/photoprism:preview
+    image: photoprism/photoprism:latest
     container_name: photoprism
     user: ${UID}:${GID}
     group_add:
       - "39"
       - "105"
+    depends_on:
+      - authelia
+      - mariadb
+      - openldap
+      - traefik
     working_dir: /photoprism
     volumes:
       - /mnt/drv0/Photos:/photoprism/originals
       - /mnt/drv1/Import:/photoprism/import
       - /mnt/drv2/PhotoPrismBackup:/photoprism/backup
-      - ${HOME}/.config/photoprism:/photoprism/storage
+      - ${HOME}/.config/svcs/photoprism:/photoprism/storage
     devices:
       - /dev/dri:/dev/dri
     ports:
       - 2342:2342
     environment:
     # Basic
-      - PHOTOPRISM_ADMIN_PASSWORD=${PHOTOPRISM_ADMIN_PASSWORD}
+      # - PHOTOPRISM_ADMIN_PASSWORD=${PHOTOPRISM_ADMIN_PASSWORD}
       - PHOTOPRISM_LOG_LEVEL=info
       - PHOTOPRISM_DEBUG=false
       - PHOTOPRISM_PUBLIC=false
@@ -81,10 +86,10 @@ services:
     # Database Connection
       - PHOTOPRISM_DATABASE_DRIVER=mysql
       # - PHOTOPRISM_DATABASE_DSN=
-      - PHOTOPRISM_DATABASE_SERVER=photoprism_mariadb:3306
+      - PHOTOPRISM_DATABASE_SERVER=mariadb:3306
       - PHOTOPRISM_DATABASE_NAME=photoprism
       - PHOTOPRISM_DATABASE_USER=photoprism
-      - PHOTOPRISM_DATABASE_PASSWORD=${PHOTOPRISM_DATABASE_PASSWORD}
+      - PHOTOPRISM_DATABASE_PASSWORD=${MARIADB_PASSWORD}
       - PHOTOPRISM_DATABASE_CONNS=6
       - PHOTOPRISM_DATABASE_CONNS_IDLE=3
     # External Tools
@@ -121,13 +126,11 @@ services:
       - PHOTOPRISM_FACE_MATCH_DIST=0.46
     # Docker Specific
       - PHOTOPRISM_DISABLE_CHOWN=false
-      - PHOTOPRISM_INIT=update gpu tensorflow davfs clitools clean
+      # - PHOTOPRISM_INIT=update gpu tensorflow davfs clitools clean
       - PHOTOPRISM_UID=${UID}
       - PHOTOPRISM_GID=${GID}
       - PHOTOPRISM_UMASK=0022
       - HOME=/photoprism
-    depends_on:
-        - mariadb
     deploy:
       resources:
         limits:

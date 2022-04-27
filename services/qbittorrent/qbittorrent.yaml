@@ -1,16 +1,17 @@
 services:
   qbittorrent:
     extends:
-      file: ../../base/docker-compose.yaml
+      file: ../base.yaml
       service: base
-    image: lscr.io/linuxserver/qbittorrent:latest
+    image: linuxserver/qbittorrent:latest
     container_name: qbittorrent
     environment:
       - WEBUI_PORT=8081
     volumes:
-      - ${HOME}/.config/qbittorrent:/config
+      - ${HOME}/.config/svcs/qbittorrent:/config
       - /mnt/drv1/torrent:/downloads
     ports:
+      # - 8081:8081
       - 6881:6881
       - 6881:6881/udp
     labels:

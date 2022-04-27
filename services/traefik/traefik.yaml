@@ -1,15 +1,17 @@
 services:
   traefik:
     extends:
-      file: ../../base/docker-compose.yaml
+      file: ../base.yaml
       service: base
-    image: traefik:latest
+    image: traefik:2.7
     container_name: traefik
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ${HOME}/.config/traefik:/traefik
+    depends_on:
+      - authelia
     command:
       - --configFile=/traefik/traefik.yaml
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ${HOME}/.config/svcs/traefik:/traefik
     environment:
       - CF_API_EMAIL=${CF_API_EMAIL}
       - CF_API_KEY=${CF_API_KEY}

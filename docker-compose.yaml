@@ -14,6 +14,11 @@ services:
       file: services/mariadb/mariadb.yaml
       service: mariadb
 
+  openldap:
+    extends:
+      file: services/openldap/openldap.yaml
+      service: openldap
+
   photoprism:
     extends:
       file: services/photoprism/photoprism.yaml
@@ -75,15 +80,15 @@ networks:
       config:
         - subnet: 2001:db8:a::/64
           gateway: 2001:db8:a::1
-  svcs_vlan:
-    name: svcs_vlan
-    driver: macvlan
-    driver_opts:
-      parent: enp0s31f6
-    ipam:
-      config:
-        - subnet: 192.168.200.0/24
-          gateway: 192.168.200.1
-          ip_range: 192.168.200.128/25
-          aux_addresses:
-            boxedmilk: 192.168.200.200
+  # svcs_vlan:
+  #   name: svcs_vlan
+  #   driver: macvlan
+  #   driver_opts:
+  #     parent: enp0s31f6
+  #   ipam:
+  #     config:
+  #       - subnet: 192.168.200.0/24
+  #         gateway: 192.168.200.1
+  #         ip_range: 192.168.200.128/25
+  #         aux_addresses:
+  #           boxedmilk: 192.168.200.200

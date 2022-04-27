@@ -1,13 +1,19 @@
 services:
   portainer:
     extends:
-      file: ../../base/docker-compose.yaml
+      file: ../base.yaml
       service: base
     image: portainer/portainer-ce:linux-amd64-2.11.1-alpine
     container_name: portainer
+    depends_on:
+      - authelia
+      - openldap
+      - traefik
     volumes:
-      - ${HOME}/.config/portainer:/data
+      - ${HOME}/.config/svcs/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock
+    # ports:
+    #   - 9000:9000
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.portainer.rule=Host(`portainer.${DOMAIN}`)"
