@@ -15,3 +15,9 @@ services:
       - REDIS_ACLFILE=/opt/bitnami/redis/mounted-etc/users.acl
     # ports:
     #   - 6379:6379
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s

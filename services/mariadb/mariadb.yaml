@@ -19,3 +19,11 @@ services:
       # - MARIADB_DATABASE=
       # - MARIADB_USER=
       # - MARIADB_PASSWORD=${MARIADB_PASSWORD}
+    # ports:
+    #   - 3306:3306
+    healthcheck:
+      test: ["CMD-SHELL", "ps -aux | grep -v grep | grep mysqld"]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+      start_period: 30s
