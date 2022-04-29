@@ -8,7 +8,6 @@ services:
     depends_on:
       - authelia
       - openldap
-      - traefik
     volumes:
       - ${HOME}/.config/svcs/portainer:/data
       - /var/run/docker.sock:/var/run/docker.sock

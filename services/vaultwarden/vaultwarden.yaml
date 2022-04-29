@@ -6,9 +6,7 @@ services:
     image: vaultwarden/server:latest
     container_name: vaultwarden
     depends_on:
-      - authelia
       - openldap
-      - traefik
     environment:
       - ROCKET_PORT=8080
       - SIGNUPS_ALLOWED=false

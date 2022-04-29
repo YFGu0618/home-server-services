@@ -5,6 +5,8 @@ services:
       service: base
     image: linuxserver/qbittorrent:latest
     container_name: qbittorrent
+    depends_on:
+      - authelia
     environment:
       - WEBUI_PORT=8081
     volumes:
@@ -15,7 +17,7 @@ services:
       - 6881:6881
       - 6881:6881/udp
     healthcheck:
-      test: ["CMD-SHELL", "curl --fail http://127.0.0.1:${WEBUI_PORT}/api/v2/app/version"]
+      test: ["CMD-SHELL", "curl --fail http://127.0.0.1:8081/api/v2/app/version"]
       interval: 1m
       timeout: 10s
       retries: 3

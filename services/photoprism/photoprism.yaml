@@ -13,7 +13,6 @@ services:
       - authelia
       - mariadb
       - openldap
-      - traefik
     working_dir: /photoprism
     volumes:
       - /mnt/drv0/Photos:/photoprism/originals

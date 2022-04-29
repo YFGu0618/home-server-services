@@ -12,7 +12,6 @@ services:
     depends_on:
       - authelia
       - openldap
-      - traefik
     volumes:
       - ${HOME}/.config/svcs/syncthing:/home/syncthing/.config/syncthing
       - /mnt/drv0:/home/syncthing/data

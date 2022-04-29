@@ -12,7 +12,6 @@ services:
     depends_on:
       - authelia
       - openldap
-      - traefik
     group_add:
       - "39"
       - "105"
