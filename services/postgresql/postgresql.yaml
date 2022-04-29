@@ -1,0 +1,22 @@
+services:
+  postgresql:
+    extends:
+      file: ../base.yaml
+      service: base
+    image: bitnami/postgresql:latest
+    container_name: postgresql
+    depends_on:
+      - openldap
+    volumes:
+      - ${HOME}/.config/svcs/postgresql:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_ENABLE_LDAP=yes
+      - POSTGRESQL_LDAP_SERVER=openldap
+      - POSTGRESQL_LDAP_PORT=1389
+      - POSTGRESQL_LDAP_BASE_DN=${POSTGRESQL_LDAP_BASE_DN}
+      - POSTGRESQL_LDAP_BIND_DN=${POSTGRESQL_LDAP_BIND_DN}
+      - POSTGRESQL_LDAP_BIND_PASSWORD=${POSTGRESQL_LDAP_BIND_PASSWORD}
+      - POSTGRESQL_LDAP_SEARCH_FILTER=${POSTGRESQL_LDAP_SEARCH_FILTER}
+      - POSTGRESQL_PASSWORD=${POSTGRESQL_PASSWORD}
+    ports:
+      - 5432:5432

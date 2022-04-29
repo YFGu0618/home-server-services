@@ -7,6 +7,7 @@ services:
     container_name: mariadb
     volumes:
       - ${HOME}/.config/svcs/mariadb:/bitnami/mariadb
+      -  ${HOME}/.config/svcs/mariadb/my.cnf:/opt/bitnami/mariadb/conf/my_custom.cnf
     environment:
       - ALLOW_EMPTY_PASSWORD=no
       - MARIADB_CHARACTER_SET=utf8mb4
