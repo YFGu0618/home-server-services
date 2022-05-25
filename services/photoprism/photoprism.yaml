@@ -3,7 +3,7 @@ services:
     extends:
       file: ../base.yaml
       service: base
-    image: photoprism/photoprism:latest
+    image: photoprism/photoprism:preview
     container_name: photoprism
     user: ${UID}:${GID}
     group_add:
@@ -23,7 +23,7 @@ services:
       - /dev/dri:/dev/dri
     environment:
     # Basic
-      # - PHOTOPRISM_ADMIN_PASSWORD=${PHOTOPRISM_ADMIN_PASSWORD}
+      - PHOTOPRISM_ADMIN_PASSWORD=${PHOTOPRISM_ADMIN_PASSWORD}
       - PHOTOPRISM_LOG_LEVEL=info
       - PHOTOPRISM_DEBUG=false
       - PHOTOPRISM_PUBLIC=false
@@ -42,7 +42,7 @@ services:
       - PHOTOPRISM_TEMP_PATH=/photoprism/storage/temp
       # - PHOTOPRISM_ASSETS_PATH=
     # Index Workers
-      - PHOTOPRISM_WORKERS=12
+      - PHOTOPRISM_WORKERS=6
       - PHOTOPRISM_WAKEUP_INTERVAL=900
       - PHOTOPRISM_AUTO_INDEX=300
       - PHOTOPRISM_AUTO_IMPORT=180
@@ -114,7 +114,7 @@ services:
       - PHOTOPRISM_JPEG_QUALITY=85
     # Facial Recognition
       - PHOTOPRISM_FACE_SIZE=42
-      - PHOTOPRISM_FACE_SCORE=9
+      - PHOTOPRISM_FACE_SCORE=1
       - PHOTOPRISM_FACE_OVERLAP=64
       - PHOTOPRISM_FACE_CLUSTER_SIZE=20
       - PHOTOPRISM_FACE_CLUSTER_SCORE=15
@@ -123,7 +123,7 @@ services:
       - PHOTOPRISM_FACE_MATCH_DIST=0.46
     # Docker Specific
       - PHOTOPRISM_DISABLE_CHOWN=false
-      # - PHOTOPRISM_INIT=update gpu tensorflow davfs clitools clean
+      - PHOTOPRISM_INIT=update gpu tensorflow davfs clitools clean
       - PHOTOPRISM_UID=${UID}
       - PHOTOPRISM_GID=${GID}
       - PHOTOPRISM_UMASK=0022
