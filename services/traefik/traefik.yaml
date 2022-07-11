@@ -3,7 +3,7 @@ services:
     extends:
       file: ../base.yaml
       service: base
-    image: traefik:2.7
+    image: traefik:latest
     container_name: traefik
     depends_on:
       - authelia

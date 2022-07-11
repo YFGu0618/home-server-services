@@ -6,7 +6,7 @@ services:
     build:
       context: ./
       network: host
-    image: ${USER}/jellyfin:10.8.0b2
+    image: ${USER}/jellyfin:10.8.1
     container_name: jellyfin
     user: jellyfin
     depends_on:

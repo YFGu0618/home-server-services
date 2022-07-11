@@ -9,9 +9,10 @@ services:
       - USERID=${UID}
       - GROUPID=${GID}
     volumes:
+      - /mnt/drv0:/mnt0
       - /mnt/drv1:/mnt1
       - /mnt/drv2:/mnt2
-    command: '-s "${HOSTNAME}1;/mnt1;yes;no;no;${USER}" -s "${HOSTNAME}2;/mnt2;yes;no;no;${USER}" -u "${USER};${SAMBA_PASSWORD}" -p'
+    command: '-s "${HOSTNAME}0;/mnt0;yes;no;no;${USER}" -s "${HOSTNAME}1;/mnt1;yes;no;no;${USER}" -s "${HOSTNAME}2;/mnt2;yes;no;no;${USER}" -u "${USER};${SAMBA_PASSWORD}" -p'
     ports:
       - 445:445
       - 445:445/udp

@@ -1,5 +1,5 @@
 FROM golang:1.18-bullseye as builder
-ENV SYNCTHING_VERSION="v1.20.1"
+ENV SYNCTHING_VERSION="v1.20.3"
 RUN apt-get -qq update && \
     apt-get install -y -qq \
         git

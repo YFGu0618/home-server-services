@@ -3,7 +3,7 @@ services:
     extends:
       file: ../base.yaml
       service: base
-    image: portainer/portainer-ce:linux-amd64-2.13.1-alpine
+    image: portainer/portainer-ce:linux-amd64-2.14.1-alpine
     container_name: portainer
     depends_on:
       - authelia

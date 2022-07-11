@@ -10,11 +10,11 @@ services:
     container_name: vhserver
     user: vhserver
     volumes:
-      - ${HOME}/.config/vhserver/common.cfg:/home/vhserver/lgsm/config-lgsm/vhserver/common.cfg:ro
-      - ${HOME}/.config/vhserver/save:/home/vhserver/.config/unity3d/IronGate/Valheim
-      - ${HOME}/.config/vhserver/backup:/home/vhserver/lgsm/backup
-      - ${HOME}/.config/vhserver/log:/home/vhserver/log
-      - ${HOME}/.config/vhserver/gamelog:/home/vhserver/serverfiles/Saved/Logs
+      - ${HOME}/.config/svcs/vhserver/common.cfg:/home/vhserver/lgsm/config-lgsm/vhserver/common.cfg:ro
+      - ${HOME}/.config/svcs/vhserver/save:/home/vhserver/.config/unity3d/IronGate/Valheim
+      - ${HOME}/.config/svcs/vhserver/backup:/home/vhserver/lgsm/backup
+      - ${HOME}/.config/svcs/vhserver/log:/home/vhserver/log
+      - ${HOME}/.config/svcs/vhserver/gamelog:/home/vhserver/serverfiles/Saved/Logs
     ports:
       - 2456:2456/udp
       - 2457:2457/udp

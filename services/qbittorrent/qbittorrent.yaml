@@ -14,8 +14,8 @@ services:
       - /mnt/drv1/torrent:/downloads
     ports:
       # - 8081:8081
-      - 6881:6881
-      - 6881:6881/udp
+      - 30435:30435
+      - 30435:30435/udp
     healthcheck:
       test: ["CMD-SHELL", "curl --fail http://127.0.0.1:8081/api/v2/app/version"]
       interval: 1m
